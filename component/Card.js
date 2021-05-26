@@ -1,12 +1,13 @@
 import React from 'react'
-import {StyleSheet,View,Text,Image} from 'react-native'
-
+import {StyleSheet,Dimensions,View,Text,Image} from 'react-native'
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const Card = ({it}) => {
     return (
         <>  
             <View style={styles.box}> 
-                <Image  source={{uri:it.url}} style={{height:300,width:170,borderRadius:5}} />
-                <View style={{}} >
+                <Image  source={{uri:it.url}} style={{height:windowHeight/2,width:windowWidth/2,borderRadius:15}} />
+                <View>
                     <Text style={styles.text} >{it.name} </Text>
                 </View>
             </View>
@@ -16,9 +17,10 @@ const Card = ({it}) => {
 }
 const styles = StyleSheet.create({
     box:{
-    height:300,
-    width:170, 
-    margin:5,
+    height:windowHeight/2,
+    width:windowWidth/2, 
+    marginTop:5,
+    marginEnd:5,
     marginBottom:14,
     backgroundColor:'#eee'
 
