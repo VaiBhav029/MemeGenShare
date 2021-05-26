@@ -72,28 +72,34 @@ const Upload = ({navigation}) => {
     
       };
         const submitPost = async () => {
-            const imageUrl = await uploadImage();
-            console.log('Image Url: ', imageUrl);
-            console.log('Post: ', cap);
+                const imageUrl = await uploadImage();
+                console.log('Image Url: ', imageUrl);
+                console.log('Post: ', cap);
+                if(imageUrl === null){
+                        Alert.alert('Error','You must add an image')
+                        setUploading(false);
+    
+                }else{
+                    firestore()
+                    .collection('fav')
+                    .add({
+                    name:cap,
+                    url: imageUrl,
+                    })
+                    .then(() => {
+                    console.log('Post Added!');
+                    Alert.alert(
+                        'Post published!',
+                        'Your post has been published Successfully!',
+                    );
+                    navigation.goBack()
+                    setCap(null);
+                    })
+                    .catch((error) => {
+                    console.log('Something went wrong with added post to firestore.', error);
+                    });
+                }
 
-            firestore()
-            .collection('fav')
-            .add({
-            name:cap,
-            url: imageUrl,
-            })
-            .then(() => {
-            console.log('Post Added!');
-            Alert.alert(
-                'Post published!',
-                'Your post has been published Successfully!',
-            );
-            navigation.goBack()
-            setCap(null);
-            })
-            .catch((error) => {
-            console.log('Something went wrong with added post to firestore.', error);
-            });
         }
             
 
@@ -123,7 +129,7 @@ const Upload = ({navigation}) => {
                 <ActivityIndicator size="large" color="#EE5A24" />
             </View>
             ) : (
-            <TouchableOpacity  onPress={submitPost} activeOpacity={0.3} style={style.enable}>
+            <TouchableOpacity  onPress={submitPost} activeOpacity={0.3} style={style.enable} >
                 <Ionicons name='chevron-up-outline' size={30} color='#fff'/>
             </TouchableOpacity>
             )}
@@ -144,6 +150,15 @@ const style = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-around',
         backgroundColor:'#EE5A24',
+        borderRadius:10,
+        height:50,
+        width:50,  
+    },
+    disable:{
+        marginVertical:20,
+        alignItems:'center',
+        justifyContent:'space-around',
+        backgroundColor:'grey',
         borderRadius:10,
         height:50,
         width:50,  
